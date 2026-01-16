@@ -28,6 +28,17 @@ public class JobEntity {
     @Column(name = "location", nullable = false)
     private String location;
 
+    public JobEntity(Long id, String title, String description, Double minSalary, Double maxSalary, String location) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.minSalary = minSalary;
+        this.maxSalary = maxSalary;
+        this.location = location;
+    }
+
+    public JobEntity() {}
+
     public Long getId() {
         return id;
     }
