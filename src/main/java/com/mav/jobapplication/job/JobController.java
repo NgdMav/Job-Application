@@ -1,11 +1,11 @@
 package com.mav.jobapplication.job;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/jobs")
 public class JobController {
     private JobService jobService;
 
@@ -13,8 +13,18 @@ public class JobController {
         this.jobService = jobService;
     }
 
-    @GetMapping("/jobs")
-    public List<Job> findAll() {
+    @GetMapping("/")
+    public List<Job> getAll() {
         return jobService.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public Job getOneById(@PathVariable Long id) {
+        return jobService.getOneById(id);
+    }
+
+    @PostMapping("/")
+    public Job create(@RequestBody Job job) {
+        return jobService.create(job);
     }
 }
