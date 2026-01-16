@@ -1,5 +1,6 @@
 package com.mav.jobapplication.job;
 
+import com.mav.jobapplication.company.CompanyEntity;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -27,6 +28,18 @@ public class JobEntity {
 
     @Column(name = "location", nullable = false)
     private String location;
+
+    @ManyToOne
+    @JoinColumn(name = "company_entity_id")
+    private CompanyEntity companyEntity;
+
+    public CompanyEntity getCompanyEntity() {
+        return companyEntity;
+    }
+
+    public void setCompanyEntity(CompanyEntity companyEntity) {
+        this.companyEntity = companyEntity;
+    }
 
     public JobEntity(Long id, String title, String description, Double minSalary, Double maxSalary, String location) {
         this.id = id;
