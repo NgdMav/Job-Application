@@ -1,70 +1,66 @@
 package com.mav.jobapplication.job.impl;
 
 import com.mav.jobapplication.job.Job;
+import com.mav.jobapplication.job.JobRepository;
 import com.mav.jobapplication.job.JobService;
+import com.mav.jobapplication.job.utils.JobMapper;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class JobServiceImpl implements JobService {
-    private final Map<Long, Job> jobs;
-    private final AtomicLong counter;
 
-    public JobServiceImpl() {
-        this.jobs = new HashMap<>();
-        this.counter = new AtomicLong(0);
+    private final JobRepository jobRepository;
+    private final JobMapper jobMapper;
+
+    public JobServiceImpl(JobRepository jobRepository, JobMapper jobMapper) {
+        this.jobRepository = jobRepository;
+        this.jobMapper = jobMapper;
     }
 
     @Override
     public List<Job> getAll() {
-        return jobs.values().stream().toList();
+        return jobRepository.findAll().stream().map(jobMapper::toDomain).toList();
     }
 
     @Override
     public Job getOneById(Long id) {
-        if (!jobs.containsKey(id)) {
-            throw new NoSuchElementException("Job with id " + id + " does not exist");
-        }
-        return jobs.get(id);
+        return jobMapper.toDomain(jobRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Job with id " + id + " does not exist")
+        ));
     }
 
     @Override
     public Job create(Job job) {
-        if (job.getId() != null) {
-            throw new IllegalStateException("Job must not have an id");
+        if (job.maxSalary() < job.minSalary()) {
+            throw new IllegalArgumentException("Max salary needs to be greater than min salary");
         }
-        job.setId(counter.incrementAndGet());
-        jobs.put(job.getId(), job);
-        return job;
+        var jobEntity = jobMapper.toEntity(job);
+        var result = jobRepository.save(jobEntity);
+        return jobMapper.toDomain(result);
     }
 
     @Override
     public void delete(Long id) {
-        if (!jobs.containsKey(id)) {
-            throw new NoSuchElementException("Job with id " + id + " does not exist");
-        }
-        jobs.remove(id);
+        var jobEntity = jobRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Job with id " + id + " does not exist")
+        );
+        jobRepository.delete(jobEntity);
     }
 
     @Override
     public Job update(Long id, Job job) {
-        if (!jobs.containsKey(id)) {
-            throw new NoSuchElementException("Job with id " + id + " does not exist");
-        }
-        var newJob = new Job(
-                id,
-                job.getTitle(),
-                job.getDescription(),
-                job.getMinSalary(),
-                job.getMaxSalary(),
-                job.getLocation()
+        var jobEntityOld = jobRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Job with id " + id + " does not exist")
         );
-        jobs.put(id, newJob);
-        return newJob;
+        if (job.maxSalary() < job.minSalary()) {
+            throw new IllegalArgumentException("Max salary needs to be greater than min salary");
+        }
+        var jobEntityNew = jobMapper.toEntity(job);
+        jobEntityNew.setId(jobEntityOld.getId());
+        var result = jobRepository.save(jobEntityNew);
+        return jobMapper.toDomain(result);
     }
 }

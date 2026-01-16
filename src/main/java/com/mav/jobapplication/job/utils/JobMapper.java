@@ -5,7 +5,7 @@ import com.mav.jobapplication.job.JobEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-class JobMapper {
+public class JobMapper {
     public Job toDomain(JobEntity jobEntity) {
         return new Job(
                 jobEntity.getId(),

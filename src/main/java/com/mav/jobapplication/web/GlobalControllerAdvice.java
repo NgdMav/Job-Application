@@ -1,6 +1,6 @@
 package com.mav.jobapplication.web;
 
-//import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -31,11 +31,11 @@ class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(value = {
-            //EntityNotFoundException.class,
+            EntityNotFoundException.class,
             NoSuchElementException.class
     })
     public ResponseEntity<ErrorResponseDTO> handleEntityNotFoundException(
-            NoSuchElementException e
+            Exception e
     ) {
         log.error(e.getMessage(), e);
         var errorDto = new ErrorResponseDTO(
