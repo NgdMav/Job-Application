@@ -15,23 +15,28 @@ public class JobController {
     }
 
     @GetMapping("/")
-    public List<Job> getAll() {
-        return jobService.getAll();
+    public ResponseEntity<List<Job>> getAll() {
+        return ResponseEntity.ok(jobService.getAll());
     }
 
     @GetMapping("/{id}")
-    public Job getOneById(@PathVariable Long id) {
-        return jobService.getOneById(id);
+    public ResponseEntity<Job> getOneById(@PathVariable Long id) {
+        return ResponseEntity.ok(jobService.getOneById(id));
     }
 
     @PostMapping("/")
-    public Job create(@RequestBody Job job) {
-        return jobService.create(job);
+    public ResponseEntity<Job> create(@RequestBody Job job) {
+        return ResponseEntity.ok(jobService.create(job));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         jobService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Job> update(@PathVariable Long id, @RequestBody Job job) {
+        return ResponseEntity.ok(jobService.update(id, job));
     }
 }

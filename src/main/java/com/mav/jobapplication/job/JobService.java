@@ -44,4 +44,20 @@ public class JobService {
         }
         jobs.remove(id);
     }
+
+    public Job update(Long id, Job job) {
+        if (!jobs.containsKey(id)) {
+            throw new NoSuchElementException("Job with id " + id + " does not exist");
+        }
+        var newJob = new Job(
+                id,
+                job.getTitle(),
+                job.getDescription(),
+                job.getMinSalary(),
+                job.getMaxSalary(),
+                job.getLocation()
+        );
+        jobs.put(id, newJob);
+        return newJob;
+    }
 }
