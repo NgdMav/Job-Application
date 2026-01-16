@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
@@ -22,6 +23,9 @@ public class JobService {
     }
 
     public Job getOneById(Long id) {
+        if (!jobs.containsKey(id)) {
+            throw new NoSuchElementException("Job with id " + id + " does not exist");
+        }
         return jobs.get(id);
     }
 
@@ -32,5 +36,12 @@ public class JobService {
         job.setId(counter.incrementAndGet());
         jobs.put(job.getId(), job);
         return job;
+    }
+
+    public void delete(Long id) {
+        if (!jobs.containsKey(id)) {
+            throw new NoSuchElementException("Job with id " + id + " does not exist");
+        }
+        jobs.remove(id);
     }
 }

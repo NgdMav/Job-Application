@@ -1,5 +1,6 @@
 package com.mav.jobapplication.job;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,5 +27,11 @@ public class JobController {
     @PostMapping("/")
     public Job create(@RequestBody Job job) {
         return jobService.create(job);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        jobService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
