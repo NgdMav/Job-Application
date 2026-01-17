@@ -1,5 +1,7 @@
 package com.mav.jobapplication.job.impl;
 
+import com.mav.jobapplication.company.Company;
+import com.mav.jobapplication.company.utils.CompanyMapper;
 import com.mav.jobapplication.job.Job;
 import com.mav.jobapplication.job.JobRepository;
 import com.mav.jobapplication.job.JobService;
@@ -14,10 +16,12 @@ public class JobServiceImpl implements JobService {
 
     private final JobRepository jobRepository;
     private final JobMapper jobMapper;
+    private final CompanyMapper companyMapper;
 
-    public JobServiceImpl(JobRepository jobRepository, JobMapper jobMapper) {
+    public JobServiceImpl(JobRepository jobRepository, JobMapper jobMapper, CompanyMapper companyMapper) {
         this.jobRepository = jobRepository;
         this.jobMapper = jobMapper;
+        this.companyMapper = companyMapper;
     }
 
     @Override
@@ -62,5 +66,13 @@ public class JobServiceImpl implements JobService {
         jobEntityNew.setId(jobEntityOld.getId());
         var result = jobRepository.save(jobEntityNew);
         return jobMapper.toDomain(result);
+    }
+
+    @Override
+    public Company getJobCompany(Long id) {
+        var jobEntity = jobRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Job with id " + id + " does not exist")
+        );
+        return companyMapper.toDomain(jobEntity.getCompanyEntity());
     }
 }

@@ -1,5 +1,6 @@
 package com.mav.jobapplication.job;
 
+import com.mav.jobapplication.company.Company;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,5 +40,10 @@ public class JobController {
     @PutMapping("/{id}")
     public ResponseEntity<Job> update(@PathVariable Long id, @Valid @RequestBody Job job) {
         return ResponseEntity.ok(jobService.update(id, job));
+    }
+
+    @GetMapping("/{id}/company")
+    public ResponseEntity<Company> getJobCompany(@PathVariable Long id) {
+        return ResponseEntity.ok(jobService.getJobCompany(id));
     }
 }
