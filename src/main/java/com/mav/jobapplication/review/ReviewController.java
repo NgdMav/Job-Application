@@ -17,28 +17,28 @@ class ReviewController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Review>> getAll() {
-        return ResponseEntity.ok(reviewService.getAll());
+    public ResponseEntity<List<Review>> getAll(@PathVariable Long companyId) {
+        return ResponseEntity.ok(reviewService.getAll(companyId));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Review> getOneById(@PathVariable Long id) {
-        return ResponseEntity.ok(reviewService.getOneById(id));
+    public ResponseEntity<Review> getOneById(@PathVariable Long companyId, @PathVariable Long id) {
+        return ResponseEntity.ok(reviewService.getOneById(companyId, id));
     }
 
     @PostMapping("/")
-    public ResponseEntity<Review> create(@Valid @RequestBody Review review) {
-        return ResponseEntity.ok(reviewService.create(review));
+    public ResponseEntity<Review> create(@PathVariable Long companyId, @Valid @RequestBody Review review) {
+        return ResponseEntity.ok(reviewService.create(companyId, review));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        reviewService.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable Long companyId, @PathVariable Long id) {
+        reviewService.delete(companyId, id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Review> update(@PathVariable Long id, @Valid @RequestBody Review review) {
-        return ResponseEntity.ok(reviewService.update(id, review));
+    public ResponseEntity<Review> update(@PathVariable Long companyId, @PathVariable Long id, @Valid @RequestBody Review review) {
+        return ResponseEntity.ok(reviewService.update(companyId, id, review));
     }
 }

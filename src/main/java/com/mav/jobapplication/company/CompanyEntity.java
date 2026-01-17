@@ -1,6 +1,7 @@
 package com.mav.jobapplication.company;
 
 import com.mav.jobapplication.job.JobEntity;
+import com.mav.jobapplication.review.ReviewEntity;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -21,6 +22,9 @@ public class CompanyEntity {
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<JobEntity> jobs;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ReviewEntity> reviews;
 
     public CompanyEntity() {
     }

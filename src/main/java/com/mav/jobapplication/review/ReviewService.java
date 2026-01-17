@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface ReviewService {
 
-    List<Review> getAll();
+    List<Review> getAll(Long companyId);
 
-    Review getOneById(Long id);
+    Review getOneById(Long companyId, Long id);
 
-    Review create(@Valid Review review);
+    Review create(Long companyId, @Valid Review review);
 
-    void delete(Long id);
+    void delete(Long companyId, Long id);
 
-    Review update(Long id, @Valid Review review);
+    Review update(Long companyId, Long id, @Valid Review review);
 }
