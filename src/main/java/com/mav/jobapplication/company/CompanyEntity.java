@@ -3,7 +3,7 @@ package com.mav.jobapplication.company;
 import com.mav.jobapplication.job.JobEntity;
 import jakarta.persistence.*;
 
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "companies")
@@ -19,13 +19,13 @@ public class CompanyEntity {
     @Column(name = "description", length = 1000)
     private String description;
 
-    @OneToMany(mappedBy = "companyEntity", cascade = CascadeType.ALL)
-    private List<JobEntity> jobs;
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<JobEntity> jobs;
 
     public CompanyEntity() {
     }
 
-    public CompanyEntity(Long id, String name, String description, List<JobEntity> jobs) {
+    public CompanyEntity(Long id, String name, String description, Set<JobEntity> jobs) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -56,11 +56,11 @@ public class CompanyEntity {
         this.description = description;
     }
 
-    public List<JobEntity> getJobs() {
+    public Set<JobEntity> getJobs() {
         return jobs;
     }
 
-    public void setJobs(List<JobEntity> jobs) {
+    public void setJobs(Set<JobEntity> jobs) {
         this.jobs = jobs;
     }
 }

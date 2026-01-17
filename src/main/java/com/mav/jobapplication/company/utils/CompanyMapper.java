@@ -5,6 +5,9 @@ import com.mav.jobapplication.company.CompanyEntity;
 import com.mav.jobapplication.job.utils.JobMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+import java.util.stream.Collectors;
+
 @Component
 public class CompanyMapper {
     private final JobMapper jobMapper;
@@ -20,7 +23,7 @@ public class CompanyMapper {
                 companyEntity.getDescription(),
                 companyEntity.getJobs() == null ?
                         null :
-                        companyEntity.getJobs().stream().map(jobMapper::toDomain).toList()
+                        companyEntity.getJobs().stream().map(jobMapper::toDomain).collect(Collectors.toSet())
         );
     }
 
@@ -30,8 +33,8 @@ public class CompanyMapper {
                 company.name(),
                 company.description(),
                 company.jobs() == null ?
-                        null :
-                        company.jobs().stream().map(jobMapper::toEntity).toList()
+                        new HashSet<>() :
+                        company.jobs().stream().map(jobMapper::toEntity).collect(Collectors.toSet())
         );
     }
 }

@@ -5,7 +5,7 @@ import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 
-import java.util.List;
+import java.util.Set;
 
 public record Company(
         @Null
@@ -16,6 +16,6 @@ public record Company(
         String description,
 
         @Nullable
-        List<Job> jobs
+        Set<Job> jobs
 ) {
 }

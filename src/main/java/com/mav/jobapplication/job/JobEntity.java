@@ -30,24 +30,17 @@ public class JobEntity {
     private String location;
 
     @ManyToOne
-    @JoinColumn(name = "company_entity_id")
-    private CompanyEntity companyEntity;
+    @JoinColumn(name = "company_id", referencedColumnName = "id")
+    private CompanyEntity company;
 
-    public CompanyEntity getCompanyEntity() {
-        return companyEntity;
-    }
-
-    public void setCompanyEntity(CompanyEntity companyEntity) {
-        this.companyEntity = companyEntity;
-    }
-
-    public JobEntity(Long id, String title, String description, Double minSalary, Double maxSalary, String location) {
+    public JobEntity(Long id, String title, String description, Double minSalary, Double maxSalary, String location, CompanyEntity company) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.minSalary = minSalary;
         this.maxSalary = maxSalary;
         this.location = location;
+        this.company = company;
     }
 
     public JobEntity() {}
@@ -98,5 +91,13 @@ public class JobEntity {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public CompanyEntity getCompanyEntity() {
+        return company;
+    }
+
+    public void setCompanyEntity(CompanyEntity companyEntity) {
+        this.company = companyEntity;
     }
 }

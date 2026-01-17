@@ -18,6 +18,8 @@ public record Job(
         @PositiveOrZero
         Double maxSalary,
         @NotNull
-        String location
+        String location,
+        @NotNull
+        Long companyId
 ) {
 }
