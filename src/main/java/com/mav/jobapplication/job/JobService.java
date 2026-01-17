@@ -1,5 +1,7 @@
 package com.mav.jobapplication.job;
 
+import com.mav.jobapplication.company.Company;
+
 import java.util.List;
 
 public interface JobService {
@@ -12,4 +14,6 @@ public interface JobService {
     void delete(Long id);
 
     Job update(Long id, Job job);
+
+    Company getJobCompany(Long id);
 }
