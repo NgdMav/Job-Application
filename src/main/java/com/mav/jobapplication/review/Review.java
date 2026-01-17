@@ -13,6 +13,8 @@ public record Review(
         String description,
         @Range(min = 1, max = 100)
         @NotNull
-        double rating
+        double rating,
+        @NotNull
+        Long companyId
 ) {
 }
