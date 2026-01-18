@@ -8,7 +8,7 @@ import org.springframework.format.annotation.NumberFormat;
 @Table(name = "jobs")
 public class JobEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
