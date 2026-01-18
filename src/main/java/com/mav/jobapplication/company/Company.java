@@ -1,6 +1,7 @@
 package com.mav.jobapplication.company;
 
 import com.mav.jobapplication.job.Job;
+import com.mav.jobapplication.review.Review;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
@@ -16,6 +17,8 @@ public record Company(
         String description,
 
         @Nullable
-        Set<Job> jobs
+        Set<Job> jobs,
+        @Nullable
+        Set<Review> reviews
 ) {
 }

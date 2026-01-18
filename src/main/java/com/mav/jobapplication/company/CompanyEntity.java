@@ -1,6 +1,7 @@
 package com.mav.jobapplication.company;
 
 import com.mav.jobapplication.job.JobEntity;
+import com.mav.jobapplication.review.ReviewEntity;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -22,14 +23,18 @@ public class CompanyEntity {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<JobEntity> jobs;
 
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ReviewEntity> reviews;
+
     public CompanyEntity() {
     }
 
-    public CompanyEntity(Long id, String name, String description, Set<JobEntity> jobs) {
+    public CompanyEntity(Long id, String name, String description, Set<JobEntity> jobs, Set<ReviewEntity> reviews) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.jobs = jobs;
+        this.reviews = reviews;
     }
 
     public Long getId() {
@@ -62,5 +67,13 @@ public class CompanyEntity {
 
     public void setJobs(Set<JobEntity> jobs) {
         this.jobs = jobs;
+    }
+
+    public Set<ReviewEntity> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Set<ReviewEntity> reviews) {
+        this.reviews = reviews;
     }
 }
