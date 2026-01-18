@@ -1,36 +1,67 @@
 package com.mav.jobapplication.review.impl;
 
 import com.mav.jobapplication.review.Review;
+import com.mav.jobapplication.review.ReviewRepository;
 import com.mav.jobapplication.review.ReviewService;
+import com.mav.jobapplication.review.utils.ReviewMapper;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
 class ReviewServiceImpl implements ReviewService {
 
+    private final ReviewRepository reviewRepository;
+    private final ReviewMapper reviewMapper;
+
+    public ReviewServiceImpl(ReviewRepository reviewRepository, ReviewMapper reviewMapper) {
+        this.reviewRepository = reviewRepository;
+        this.reviewMapper = reviewMapper;
+    }
+
     @Override
     public List<Review> getAll(Long companyId) {
-        return List.of();
+        var reviews = reviewRepository.findByCompany_Id(companyId);
+        if (reviews == null || reviews.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return reviews.stream().map(reviewMapper::toDomain).toList();
     }
 
     @Override
     public Review getOneById(Long companyId, Long id) {
-        return null;
+        return reviewMapper.toDomain(reviewRepository.findByCompany_IdAndId(companyId,id).orElseThrow(
+                () -> new EntityNotFoundException("Review with id " + id + " and company id " + companyId + " not found")
+        ));
     }
 
     @Override
     public Review create(Long companyId, Review review) {
-        return null;
+        var validReview = reviewMapper.insertCompanyId(review, companyId);
+        var reviewEntity = reviewMapper.toEntity(validReview);
+        var result = reviewRepository.save(reviewEntity);
+        return reviewMapper.toDomain(result);
     }
 
     @Override
     public void delete(Long companyId, Long id) {
-
+        var reviewEntity = reviewRepository.findByCompany_IdAndId(companyId,id).orElseThrow(
+                () -> new EntityNotFoundException("Review with id " + id + " and company id " + companyId + " not found")
+        );
+        reviewRepository.delete(reviewEntity);
     }
 
     @Override
     public Review update(Long companyId, Long id, Review review) {
-        return null;
+        var validReview = reviewMapper.insertCompanyId(review, companyId);
+        var reviewEntityOld = reviewRepository.findByCompany_IdAndId(companyId,id).orElseThrow(
+                () -> new EntityNotFoundException("Review with id " + id + " and company id " + companyId + " not found")
+        );
+        var reviewEntityNew = reviewMapper.toEntity(validReview);
+        reviewEntityNew.setId(reviewEntityOld.getId());
+        var result = reviewRepository.save(reviewEntityNew);
+        return reviewMapper.toDomain(result);
     }
 }

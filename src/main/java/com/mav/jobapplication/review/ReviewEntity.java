@@ -4,7 +4,7 @@ import com.mav.jobapplication.company.CompanyEntity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "review_entity")
+@Table(name = "reviews")
 public class ReviewEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +23,9 @@ public class ReviewEntity {
     @ManyToOne
     @JoinColumn(name = "company_id", referencedColumnName = "id")
     private CompanyEntity company;
+
+    public ReviewEntity() {
+    }
 
     public double getRating() {
         return rating;

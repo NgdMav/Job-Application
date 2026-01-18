@@ -35,4 +35,14 @@ public class ReviewMapper {
                 )
         );
     }
+
+    public Review insertCompanyId(Review review, Long companyId) {
+        return new Review(
+                review.id(),
+                review.title(),
+                review.description(),
+                review.rating(),
+                companyId
+        );
+    }
 }

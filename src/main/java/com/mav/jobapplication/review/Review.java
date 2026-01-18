@@ -14,7 +14,7 @@ public record Review(
         @Range(min = 1, max = 100)
         @NotNull
         double rating,
-        @NotNull
+        @Null
         Long companyId
 ) {
 }
